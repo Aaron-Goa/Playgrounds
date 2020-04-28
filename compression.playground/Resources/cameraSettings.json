@@ -1,0 +1,11 @@
+{
+  "frameRate" : 60,
+  "exposureDuration" : 0.0083333333333333332,
+  "focusLensPosition" : 1,
+  "identifier" : "cameraSettings",
+  "iso" : 60,
+  "whiteBalance" : {
+    "temperature" : 5200,
+    "tint" : 0
+  }
+}
