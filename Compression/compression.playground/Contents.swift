@@ -21,6 +21,36 @@ let algorithm = COMPRESSION_ZLIB
 let compressedData = Data(bytes: destinationBuffer,
                                  count: compressedSize)
 var data = compressedData.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
+var base64 = "TY/LasMwEEX/RWvblfxudi62m1BaQmK6KhTFUhuBJRl5ZAgh/95xXGh3Yubo3DtXMlnvekk2V2JH6Tgo8328TCD1u3STsoZsCEsiFlESkNFZ4XvoLiN+IGp/tkYyGmS4WjVvXC+breQDnF8U1Bz4szSL1zqkTt6IQe6ENKC+lHTI9lZHszo5HEX71x1C818wuQVEoOPI9TjcS8588PhgSREQbxRMd4U38PGglVl4aQTGrkxOyzhOKdYD7uDfuEgopav795ptUx26z0PVNVhBS+BLd0xEo/dKIFHULG+bOg7LgjVhStM2rFhbhE9JnNGWxmX+mJHbDw=="
+
+let decodedData = Data(base64Encoded: base64)!
+//let decodedString = String(data: decodedData, encoding: .utf8)!
+ //sourceBuffer = Array(decodedData.utf8)
+var byteBuffer: [UInt8] = []
+decodedData.withUnsafeBytes {
+    byteBuffer.append(contentsOf: $0)
+}
+
+
+let decodedCapacity = 8_000_000
+let decodedDestinationBuffer = UnsafeMutablePointer<UInt8>.allocate(capacity: decodedCapacity)
+
+
+    let decodedCharCount = compression_decode_buffer(decodedDestinationBuffer,
+                                                     decodedCapacity,
+                                                     byteBuffer,
+                                                     byteBuffer.count,
+                                                     nil,
+                                                     algorithm)
+    
+    if decodedCharCount == 0 {
+        fatalError("Decoding failed.")
+    }
+
+    
+var str = String(cString: decodedDestinationBuffer)
+
+
 
 //let fileURL2 = Bundle.main.url(forResource: "a", withExtension: "txt")
 let fileURL2 = playgroundSharedDataDirectory.appendingPathComponent("a.txt")
